@@ -26,6 +26,13 @@
           "source": "data:,%23%20Tell%20systemd%20to%20not%20use%20a%20pager%20when%20printing%20information%0Aexport%20SYSTEMD_PAGER%3Dcat%0A"
         },
         "mode": 420
+      },
+      {
+        "path": "/etc/zincati/config.d/55-updates-strategy.toml",
+        "contents": {
+          "compression": "gzip",
+          "source": "data:;base64,H4sIAAAAAAAC/2SNscrDMAyEdz2F0PyT30s7FDJ27NR2MsaYWiSGRg62TEifvnjI1PXuu+9sW2NQrg6qlqA87TgirVxSjulFcPTDETnQtLD/ZOFOPu//11CVixDYH3jYksS8OQcx7BVHtEi3LPSH9JgbYX8NRX1Xdps5XYwheLNMOvslSVPus7OBbwAAAP//j+LBd6kAAAA="
+        }
       }
     ]
   },

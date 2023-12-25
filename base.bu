@@ -33,3 +33,14 @@ storage:
         inline: |
           # Tell systemd to not use a pager when printing information
           export SYSTEMD_PAGER=cat
+    - path: /etc/zincati/config.d/55-updates-strategy.toml
+      contents:
+        inline: |
+          [updates]
+          strategy = "periodic"
+          [updates.periodic]
+          time_zone = "US/Eastern"
+          [[updates.periodic.window]]
+          days = [ "Mon", "Thu" ]
+          start_time = "05:00"
+          length_minutes = 60
