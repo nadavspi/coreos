@@ -2,7 +2,11 @@ variant: fcos
 version: 1.5.0
 passwd:
   users:
-    - name: core
+    - name: nadavspi
+      groups:
+        - docker
+        - wheel
+        - sudo
       ssh_authorized_keys:
         - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP7z7HX39Yr8x7e67suEouRH8NVZ7qcXQmQ7lc54BDfv
 systemd:
@@ -12,18 +16,17 @@ systemd:
       - name: autologin-core.conf
         contents: |
           [Service]
-          # Override Execstart in main unit
           ExecStart=
-          # Add new Execstart with `-` prefix to ignore failure
-          ExecStart=-/usr/sbin/agetty --autologin core --noclear %I $TERM
+          ExecStart=-/usr/sbin/agetty --autologin nadavspi --noclear %I $TERM
           TTYVTDisallocate=no
+    - name: var-mnt-data.mount
+      enabled: true 
+      contents_local: ./files/systemd/var-mnt-data.mount
+    - name: var-mnt-data.automount
+      enabled: true 
+      contents_local: ./files/systemd/var-mnt-data.automount
 storage:
   files:
-    - path: /etc/hostname
-      mode: 0644
-      contents:
-        inline: |
-          tutorial
     - path: /etc/profile.d/systemd-pager.sh
       mode: 0644
       contents:

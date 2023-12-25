@@ -1,0 +1,7 @@
+variant: fcos
+version: 1.5.0
+storage:
+  files:
+    - path: /etc/containers/systemd/adguardhome.container
+      contents:
+        local: ./modules/adguardhome.container

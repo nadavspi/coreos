@@ -1,0 +1,36 @@
+{
+  "ignition": {
+    "config": {
+      "merge": [
+        {
+          "compression": "gzip",
+          "source": "data:;base64,H4sIAAAAAAAC/7yUzW7bRhDH73qKBVHezA9RdmQbEFAmEhqjsJFYbBrHFIoJOSIXJWfZ3aFsudC7F0tZMuVGvhTojfufj535zSz/HgjhyIIkS0XOpbBnIZwVarMVnJF/6ofOQIjNifVtwJiH/MWzNaiNcynuu6N4ljtToVXb9G2dmqvsT9TOSV97KBGrQ8m0uXL2wuLF5hDUaAsjyGFlGtmLc4wp45ZLpeUT5r/i+l+3G1N6mEdnZ8MLEcdx/GF08wQfhtW36dXwJpmdWe3q0/hp/PHr6OJOnz+O8d3YtDPV3n48v/nybfxX9vVz/XlcZWen76fLVa/E56/NYHfaAjOsNBT4QmwpKzxCrAEubWsBchY0WllXPw/M2jDWuddAgdo3Zb/jTBEjsdnn3+t1o9HspvgKrmp11kHMgeHyxI1GbhQmWFVuFD7f5kYhKzcKSbEbha1BNwrBjcKuCDcKH0oke9SSWFLhRqGkpdI12E1ywxgfG6Vt6Pxunsyup398in+Z3bqjaQbshvELuE2vm1rltqzTKBy8Mh6jZPsHSajNDlMAedGCzktVo783O8fGsw3qLTRJPjKeXKtG0uud6mM/HIhzP0e9khkuUpo9YjZn0Dzpf3tBa3RgvksKoEDmtfA8aFlVqpAkdhsuPI9UViFo4V6Jn5LZ7XVKSXL3JZlKA1WlMmCckErpYMy9t7LP6WVKd1SWTs9z8+ZDM6glVF5X38/M63nom21fzhtTOuDwG0lepDRFk2nZ2A2ZXKuWWChSwu6gMCVoTCml+86wSOn3EngyvIj84btzf+iPx5dBTRzYH05gQ6wHapwEK9CdZSsm6wYntDSnKSWyRtXyHLPJKOxyX5FhqCqbHYgxf7+e1G3F0rNZfQZdIB9QdJDge4V2P1i3+AM6K9BeTezZ2/3a1v5fqMQtq/qATFf3Xl4c6fp/6A12NfzgKQ02g38CAAD//2Aqf9RKBgAA"
+        },
+        {
+          "compression": "gzip",
+          "source": "data:;base64,H4sIAAAAAAAC/0yRz5OaMBzF7/4VDNc6xhUEsbOH4CpSfnVVFOn0ECAlKBAmiVjp+L932G3dzSXz/byXlzfJn4EkyUVeF6KgtTyX+lmS5BYz/g5kZaSOxvJAku7D3ssFZSjHH9ZfRYm5PJd+vI3SP/wmNUiQPgJgkYKU1gIVNWYc8BsXuMoAyvILYhmhFR49ZHn4EdBDXAv+uO3Bq4Zh/r9i3hXNp2N9S3phaV9SzpBA868J4lhTh2uV2/B9LYCy9V/DdumZpqUDj5mB4VN8Lc/2BRuF4+Zk6rxMvJuorF334sSH76zd7K1GXWnWCaS4C8Y+YRUhdthlseYei+vZ83XQwfLL9OpXKeP4RMo6pWujQls3cbVssgsndP9tH7hRtArE7ViuFCv4TbyAtsCAByAcoiutjhNdi8eqOOuB5eoMHEt0mCkRuyRX87ScnXVjvTNtI1yFYdaQg7I4Qbx92nvoaEfukpGk9mKwsd2ncLqJS1ddQAgBmGGPRTfndQkhfH6WH+91H3zef/ZfPbgP/gYAAP//OBIO3RoCAAA="
+        }
+      ]
+    },
+    "version": "3.4.0"
+  },
+  "storage": {
+    "files": [
+      {
+        "path": "/etc/hostname",
+        "contents": {
+          "compression": "",
+          "source": "data:,oakland"
+        },
+        "mode": 420
+      },
+      {
+        "path": "/etc/systemd/resolved.conf.d/adguardhome.conf",
+        "contents": {
+          "compression": "",
+          "source": "data:,%5BResolve%5D%0ADNS%3D127.0.0.1%0ADNSStubListener%3Dno%0A"
+        }
+      }
+    ]
+  }
+}

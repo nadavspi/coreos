@@ -1,0 +1,19 @@
+variant: fcos
+version: 1.5.0
+ignition:
+  config:
+    merge:
+      - local: ./base.ign
+      - local: ./modules/adguardhome.ign
+storage:
+  files:
+    - path: /etc/hostname
+      mode: 0644
+      contents:
+        inline: oakland
+    - path: /etc/systemd/resolved.conf.d/adguardhome.conf
+      contents:
+        inline: |
+          [Resolve]
+          DNS=127.0.0.1
+          DNSStubListener=no

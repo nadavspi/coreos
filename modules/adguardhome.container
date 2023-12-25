@@ -1,0 +1,16 @@
+# adguardhome.container
+[Container]
+ContainerName=adguardhome
+Image=docker.io/adguard/adguardhome:latest
+AutoUpdate=registry
+PublishPort=53:53/tcp
+PublishPort=53:53/udp
+PublishPort=3000:3000/tcp
+Volume=:/opt/adguardhome/work
+Volume=:/opt/adguardhome/conf
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=machines.target
