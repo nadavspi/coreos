@@ -10,6 +10,13 @@
           "compression": "gzip",
           "source": "data:;base64,H4sIAAAAAAAC/3SNQUvEMBBG7/MrBO9NoeylkIN62ossinooPYzJ2IZNMmUysfTfi6JSwb0MH+89mOsr9FNF8TMnahxnxZBJYLj7mSP8zntMZHc9HBNOZD27M0kT2Hw7s2v6iEpF4aYqPy0elazQFIrKBqf6GkOZTyxqD11/6Iy65R9a/V/atW3bf56v/pljTWR7w4vuP5uV5XzZOs5vAMMjyXtwNMIDFUVRi3HFrQAMx1wUYxzhBbOSv91sQjeHTKVRlIkUPgIAAP//UNVCPT0BAAA="
         }
+      },
+      {
+        "path": "/etc/systemd/resolved.conf.d/adguardhome.conf",
+        "contents": {
+          "compression": "",
+          "source": "data:,%5BResolve%5D%0ADNS%3D127.0.0.1%0ADNSStubListener%3Dno%0A"
+        }
       }
     ]
   }

@@ -5,3 +5,9 @@ storage:
     - path: /etc/containers/systemd/adguardhome.container
       contents:
         local: ./modules/adguardhome.container
+    - path: /etc/systemd/resolved.conf.d/adguardhome.conf
+      contents:
+        inline: |
+          [Resolve]
+          DNS=127.0.0.1
+          DNSStubListener=no

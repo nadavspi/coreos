@@ -1,0 +1,26 @@
+{
+  "ignition": {
+    "version": "3.4.0"
+  },
+  "storage": {
+    "files": [
+      {
+        "path": "/etc/yum.repos.d/tailscale.repo",
+        "contents": {
+          "compression": "gzip",
+          "source": "data:;base64,H4sIAAAAAAAC/4yNsa4CIRBF+/mKV7xWcFsT/sLOGDPLXsEAywTGYv/ekI1b252czJl7U37l7jnj1JXnjDutXOCuX/23a5q5492yi6rSL9ZKCt0csfG12P3SPrHUxvZ/FNx8JKzDL24i3QSuSaEGqY8gwUf45CY68DwwYft9Z7wyQQJ9AgAA///yWu26ywAAAA=="
+        },
+        "mode": 420
+      }
+    ]
+  },
+  "systemd": {
+    "units": [
+      {
+        "contents": "[Unit]\nDescription=Install tailscale\nWants=network-online.target \nAfter=network-online.target\nBefore=zincati.service\nConditionPathExists=|!/usr/bin/tailscale\n\n[Service]\nType=oneshot\nRemainAfterExit=yes\nExecStart=rpm-ostree install --apply-live --allow-inactive --assumeyes tailscale\n\n[Install]\nWantedBy=multi-user.target\n",
+        "enabled": true,
+        "name": "rpm-ostree-install-tailscale.service"
+      }
+    ]
+  }
+}

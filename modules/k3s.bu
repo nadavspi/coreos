@@ -1,6 +1,22 @@
 variant: fcos
 version: 1.5.0
 storage:
+  disks:
+    - device: /dev/disk/by-id/coreos-boot-disk
+      wipe_table: false
+      partitions:
+      - number: 4
+        label: root
+        size_mib: 8192
+        resize: true
+      - label: var  # not specifying "number", so this will go after the root partition
+        size_mib: 0 # means "use the rest of the space on the disk"
+  filesystems:
+    - path: /var
+      device: /dev/disk/by-partlabel/var
+      format: xfs
+      wipe_filesystem: false # preserve /var on reinstall (this is the default, but be explicit)
+      with_mount_unit: true  # mount this filesystem in the real root
   files:
     - path: /usr/local/bin/k3s
       overwrite: true
@@ -45,16 +61,15 @@ systemd:
       contents: |
         [Unit]
         Description=Install k3s dependencies
-        Wants=network-online.target
-        After=network-online.target
+        Wants=network-online.target rpm-ostree-install-tailscale.service
+        After=network-online.target rpm-ostree-install-tailscale.service
         Before=zincati.service
-        ConditionPathExists=|!/usr/bin/kubectl
         ConditionPathExists=|!/usr/share/selinux/packages/k3s.pp
 
         [Service]
         Type=oneshot
         RemainAfterExit=yes
-        ExecStart=rpm-ostree install --apply-live --allow-inactive --assumeyes kubectl k3s-selinux
+        ExecStart=rpm-ostree install --apply-live --allow-inactive --assumeyes k3s-selinux
 
         [Install]
         WantedBy=multi-user.target
@@ -100,7 +115,7 @@ systemd:
         [Service]
         Type=oneshot
         Environment=KUBECONFIG=/etc/rancher/k3s/k3s.yaml
-        ExecStart=kubectl delete pods --field-selector status.phase=Failed -A --ignore-not-found=true
+        ExecStart=k3s kubectl delete pods --field-selector status.phase=Failed -A --ignore-not-found=true
         Restart=on-failure
         RestartSec=30
 

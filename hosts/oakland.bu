@@ -5,15 +5,30 @@ ignition:
     merge:
       - local: ./base.ign
       - local: ./modules/k3s.ign
+      - local: ./modules/tailscale.ign
 storage:
   files:
     - path: /etc/hostname
       mode: 0644
       contents:
         inline: oakland
-    - path: /etc/systemd/resolved.conf.d/adguardhome.conf
-      contents:
-        inline: |
-          [Resolve]
-          DNS=127.0.0.1
-          DNSStubListener=no
+systemd:
+  units:
+    - name: "rpm-ostree-install-layers"
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Install layered packages
+        Wants=network-online.target 
+        After=network-online.target
+        Before=zincati.service
+        ConditionPathExists=|!/usr/share/selinux/packages/k3s.pp
+        ConditionPathExists=|!/usr/bin/tailscale
+
+        [Service]
+        Type=oneshot
+        RemainAfterExit=yes
+        ExecStart=rpm-ostree install --apply-live --allow-inactive --assumeyes k3s-selinux tailscale
+
+        [Install]
+        WantedBy=multi-user.target
