@@ -3,6 +3,7 @@ default: (build "oakland")
 build target:
   just butane --pretty --strict base.bu --output base.ign --files-dir .           
   just butane --pretty --strict modules/adguardhome.bu --output modules/adguardhome.ign --files-dir .           
+  just butane --pretty --strict modules/k3s.bu --output modules/k3s.ign --files-dir .           
   just butane --pretty --strict hosts/{{target}}.bu --output hosts/{{target}}.ign --files-dir .           
   just validate {{target}}
 

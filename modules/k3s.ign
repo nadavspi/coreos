@@ -1,0 +1,63 @@
+{
+  "ignition": {
+    "version": "3.4.0"
+  },
+  "storage": {
+    "files": [
+      {
+        "overwrite": true,
+        "path": "/usr/local/bin/k3s",
+        "contents": {
+          "source": "https://github.com/k3s-io/k3s/releases/download/v1.29.0%2Bk3s1/k3s",
+          "verification": {
+            "hash": "sha256-eea895a961fc8bdfeb42e634cb208e5637da8643c7fd1a1b5657ff76415a4c7a"
+          }
+        },
+        "mode": 493
+      },
+      {
+        "path": "/etc/rancher/k3s/kubelet.config",
+        "contents": {
+          "compression": "",
+          "source": "data:,apiVersion%3A%20kubelet.config.k8s.io%2Fv1beta1%0Akind%3A%20KubeletConfiguration%0AshutdownGracePeriod%3A%2060s%0AshutdownGracePeriodCriticalPods%3A%2010s%0A"
+        },
+        "mode": 420
+      },
+      {
+        "path": "/etc/yum.repos.d/kubernetes.repo",
+        "contents": {
+          "compression": "gzip",
+          "source": "data:;base64,H4sIAAAAAAAC/4yNsQoCMRBE+3yFhW0SrAThvsBPEIu9vWEPktwuyaXI34soZ+tUwzC890h9Rt2woz3dRgXT/RjcTA295mndd2u3GI04kaAFztqXIKqSEVhLHL3ECtMWfzyPfPXnN4Mqrw4bzRnLdHFiwis4fWrC+FOwKMdqxX9fPmEEMTkdca8AAAD//3LuEQXOAAAA"
+        },
+        "mode": 420
+      },
+      {
+        "path": "/etc/yum.repos.d/rancher-k3s-common.repo",
+        "contents": {
+          "compression": "gzip",
+          "source": "data:;base64,H4sIAAAAAAAC/3TNsa7CMAyF4T1P0fHeoTVVF4SUiZGNFSGUGqup0sSRnQ59e1SC2Bit7+j3TVxCT9KGQVvkGDm1Wty40N0kF8leqzeXQZvz25u/Ovg3o1NaZbG+lKwnAMmx+/S6mSEMCnUKtQxIqbDCERI7QW8o7fq0vZnyhJ4w2N4IZX5878NOgbZfT/I6LjN2gTbzCgAA//90QUSlzAAAAA=="
+        },
+        "mode": 420
+      }
+    ]
+  },
+  "systemd": {
+    "units": [
+      {
+        "contents": "[Unit]\nDescription=Install k3s dependencies\nWants=network-online.target\nAfter=network-online.target\nBefore=zincati.service\nConditionPathExists=|!/usr/bin/kubectl\nConditionPathExists=|!/usr/share/selinux/packages/k3s.pp\n\n[Service]\nType=oneshot\nRemainAfterExit=yes\nExecStart=rpm-ostree install --apply-live --allow-inactive --assumeyes kubectl k3s-selinux\n\n[Install]\nWantedBy=multi-user.target\n",
+        "enabled": true,
+        "name": "rpm-ostree-install-k3s-dependencies.service"
+      },
+      {
+        "contents": "[Unit]\nDescription=Run K3s\nWants=network-online.target\nAfter=network-online.target\n\n[Service]\nType=notify\nEnvironmentFile=-/etc/default/%N\nEnvironmentFile=-/etc/sysconfig/%N\nEnvironmentFile=-/etc/systemd/system/%N.env\nKillMode=process\nDelegate=yes\nLimitNOFILE=1048576\nLimitNPROC=infinity\nLimitCORE=infinity\nTasksMax=infinity\nTimeoutStartSec=0\nRestart=always\nRestartSec=5s\nExecStartPre=-/sbin/modprobe br_netfilter\nExecStartPre=-/sbin/modprobe overlay\nExecStart=/usr/local/bin/k3s server --kubelet-arg=\"config=/etc/rancher/k3s/kubelet.config\"\n\n[Install]\nWantedBy=multi-user.target\n    # Node shutdown leaves pods with status.phase=Failed and status.reason=Shutdown,\n",
+        "enabled": true,
+        "name": "k3s.service"
+      },
+      {
+        "contents": "[Unit]\nDescription=Cleanup pods terminated by node shutdown\nWants=k3s.service\n\n[Service]\nType=oneshot\nEnvironment=KUBECONFIG=/etc/rancher/k3s/k3s.yaml\nExecStart=kubectl delete pods --field-selector status.phase=Failed -A --ignore-not-found=true\nRestart=on-failure\nRestartSec=30\n\n[Install]\nWantedBy=multi-user.target\n",
+        "enabled": true,
+        "name": "k3s-cleanup-shutdown-pods.service"
+      }
+    ]
+  }
+}

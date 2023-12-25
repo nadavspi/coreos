@@ -26,9 +26,6 @@
           "source": "data:,%23%20Tell%20systemd%20to%20not%20use%20a%20pager%20when%20printing%20information%0Aexport%20SYSTEMD_PAGER%3Dcat%0A"
         },
         "mode": 420
-      },
-      {
-        "path": "/etc/containers/systemd/adguardhome.container"
       }
     ]
   },
