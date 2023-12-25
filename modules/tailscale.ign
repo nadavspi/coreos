@@ -13,14 +13,5 @@
         "mode": 420
       }
     ]
-  },
-  "systemd": {
-    "units": [
-      {
-        "contents": "[Unit]\nDescription=Install tailscale\nWants=network-online.target \nAfter=network-online.target\nBefore=zincati.service\nConditionPathExists=|!/usr/bin/tailscale\n\n[Service]\nType=oneshot\nRemainAfterExit=yes\nExecStart=rpm-ostree install --apply-live --allow-inactive --assumeyes tailscale\n\n[Install]\nWantedBy=multi-user.target\n",
-        "enabled": true,
-        "name": "rpm-ostree-install-tailscale.service"
-      }
-    ]
   }
 }

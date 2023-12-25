@@ -56,23 +56,6 @@ storage:
           gpgkey=https://rpm.rancher.io/public.key
 systemd:
   units:
-    - name: "rpm-ostree-install-k3s-dependencies.service"
-      enabled: true
-      contents: |
-        [Unit]
-        Description=Install k3s dependencies
-        Wants=network-online.target rpm-ostree-install-tailscale.service
-        After=network-online.target rpm-ostree-install-tailscale.service
-        Before=zincati.service
-        ConditionPathExists=|!/usr/share/selinux/packages/k3s.pp
-
-        [Service]
-        Type=oneshot
-        RemainAfterExit=yes
-        ExecStart=rpm-ostree install --apply-live --allow-inactive --assumeyes k3s-selinux
-
-        [Install]
-        WantedBy=multi-user.target
     - name: "k3s.service"
       enabled: true
       contents: |

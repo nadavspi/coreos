@@ -14,7 +14,7 @@ storage:
         inline: oakland
 systemd:
   units:
-    - name: "rpm-ostree-install-layers"
+    - name: "rpm-ostree-install-layered.service"
       enabled: true
       contents: |
         [Unit]
