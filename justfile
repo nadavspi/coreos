@@ -1,5 +1,12 @@
 default: (build "oakland")
 
+base: 
+  just butane --pretty --strict base.bu --output base.ign --files-dir .           
+  virt-install --name=fcos --vcpus=2 --ram=2048 --os-variant=fedora-coreos-stable \
+      --import --network=bridge=virbr0 --graphics=none \
+      --qemu-commandline="-fw_cfg name=opt/com.coreos/config,file=${PWD}/base.ign" \
+      --disk=size=20,backing_store=${PWD}/fedora-coreos.qcow2
+  
 build host:
   just butane --pretty --strict base.bu --output base.ign --files-dir .           
   just butane --pretty --strict modules/adguardhome.bu --output modules/adguardhome.ign --files-dir .           
