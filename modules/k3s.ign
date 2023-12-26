@@ -75,14 +75,9 @@
         "name": "var.mount"
       },
       {
-        "contents": "[Unit]\nDescription=Run K3s\nWants=network-online.target\nAfter=network-online.target\n\n[Service]\nType=notify\nEnvironmentFile=-/etc/default/%N\nEnvironmentFile=-/etc/sysconfig/%N\nEnvironmentFile=-/etc/systemd/system/%N.env\nKillMode=process\nDelegate=yes\nLimitNOFILE=1048576\nLimitNPROC=infinity\nLimitCORE=infinity\nTasksMax=infinity\nTimeoutStartSec=0\nRestart=always\nRestartSec=5s\nExecStartPre=-/sbin/modprobe br_netfilter\nExecStartPre=-/sbin/modprobe overlay\nExecStart=/usr/local/bin/k3s server --kubelet-arg=\"config=/etc/rancher/k3s/kubelet.config\"\n\n[Install]\nWantedBy=multi-user.target\n    # Node shutdown leaves pods with status.phase=Failed and status.reason=Shutdown,\n",
+        "contents": "[Unit]\nDescription=Lightweight Kubernetes\nDocumentation=https://k3s.io\nWants=network-online.target\nAfter=network-online.target\n\n[Install]\nWantedBy=multi-user.target\n\n[Service]\nType=notify\nEnvironmentFile=-/etc/default/%N\nEnvironmentFile=-/etc/sysconfig/%N\nEnvironmentFile=-/etc/systemd/system/k3s.service.env\nKillMode=process\nDelegate=yes\n# Having non-zero Limit*s causes performance problems due to accounting overhead\n# in the kernel. We recommend using cgroups to do container-local accounting.\nLimitNOFILE=1048576\nLimitNPROC=infinity\nLimitCORE=infinity\nTasksMax=infinity\nTimeoutStartSec=0\nRestart=always\nRestartSec=5s\nExecStartPre=/bin/sh -xc '! /usr/bin/systemctl is-enabled --quiet nm-cloud-setup.service'\nExecStartPre=-/sbin/modprobe br_netfilter\nExecStartPre=-/sbin/modprobe overlay\nExecStart=/usr/local/bin/k3s \\\n    server \\\n  '--disable' \\\n  'traefik' \\\n  '--disable' \\\n  'servicelb' \\\n  'server' \\\n  '--cluster-init' \\\n\n[Service]\nTimeoutStopFailureMode=abort\n",
         "enabled": true,
         "name": "k3s.service"
-      },
-      {
-        "contents": "[Unit]\nDescription=Cleanup pods terminated by node shutdown\nWants=k3s.service\n\n[Service]\nType=oneshot\nEnvironment=KUBECONFIG=/etc/rancher/k3s/k3s.yaml\nExecStart=k3s kubectl delete pods --field-selector status.phase=Failed -A --ignore-not-found=true\nRestart=on-failure\nRestartSec=30\n\n[Install]\nWantedBy=multi-user.target\n",
-        "enabled": true,
-        "name": "k3s-cleanup-shutdown-pods.service"
       }
     ]
   }
