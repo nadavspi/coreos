@@ -53,3 +53,7 @@ coreos-installer +ARGS:
         --security-opt label=disable        \
         --volume ${PWD}:/pwd --workdir /pwd \
         quay.io/coreos/coreos-installer:release {{ARGS}}
+
+config-kubectl:
+  scp 192.168.1.187:/etc/rancher/k3s/k3s.yaml .
+  sed -i "s/127\.0\.0\.1/192\.168\.1\.187/" k3s.yaml
