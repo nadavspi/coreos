@@ -93,7 +93,7 @@ systemd:
           traefik \
           --disable \
           servicelb \
-          --server https://192.168.1.187:6443 \
+          --server https://oakland:6443 \
           --token-file /root/token
 
         [Service]
