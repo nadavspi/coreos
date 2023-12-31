@@ -1,5 +1,13 @@
 {
   "ignition": {
+    "config": {
+      "merge": [
+        {
+          "compression": "gzip",
+          "source": "data:;base64,H4sIAAAAAAAC/0yRX5OaMBDA3/0UmbzWMRqiiJ17oHByInOn5eyBnT7kMNBY/h0JInb47p1wV8+8ZPaX3Z3fZv8OAIA8ybnkRQ4XQMUAwBOrxDuA2oiMxnAAQDdUuUIWFU3YZ2rMUybgAvzsQ/CB+6eSyt+qBWIyQm2djSpWFmJ0QJLyVEQ0ZT2Bw8+SqMgly6W49r/yrKyY+C+VXHh5U6a8irqKlBY8UEkXX1+pYDMyfCBiZb4fC5H2UVBirb5/W35B2fqHfn6JluIZCe/JsTdeIO7Ntnl2whNif1aTVzzF0cVN9Z2mp/oxP07cID/atQyerDpAWKPTtykxcMtnle8Z+7Ulx5GInQneaP6metidT3u0fDzP3fXF9jDh2tavfXrvvIXzpNnFZGqFs7ndNGEsjb3etNuta5iJaSKE2pcaz9pGad/dweuc3c1PZcVBjUvw+IN1/f1LbWrQDf4FAAD//3RNgHTZAQAA"
+        }
+      ]
+    },
     "version": "3.4.0"
   },
   "passwd": {
@@ -26,13 +34,6 @@
           "source": "data:,%23%20Tell%20systemd%20to%20not%20use%20a%20pager%20when%20printing%20information%0Aexport%20SYSTEMD_PAGER%3Dcat%0A"
         },
         "mode": 420
-      },
-      {
-        "path": "/etc/zincati/config.d/55-updates-strategy.toml",
-        "contents": {
-          "compression": "gzip",
-          "source": "data:;base64,H4sIAAAAAAAC/2SNscrDMAyEdz2F0PyT30s7FDJ27NR2MsaYWiSGRg62TEifvnjI1PXuu+9sW2NQrg6qlqA87TgirVxSjulFcPTDETnQtLD/ZOFOPu//11CVixDYH3jYksS8OQcx7BVHtEi3LPSH9JgbYX8NRX1Xdps5XYwheLNMOvslSVPus7OBbwAAAP//j+LBd6kAAAA="
-        }
       }
     ]
   },
@@ -48,14 +49,9 @@
         "name": "serial-getty@ttyS0.service"
       },
       {
-        "contents": "[Unit]\nDescription=Mount ono data share\n\n[Mount]\nWhat=192.168.1.77:/mnt/user/data\nWhere=/var/mnt/data\nType=nfs4\nTimeoutSec=30\n\n[Install]\nWantedBy=multi-user.target\n",
+        "contents": "[Unit]\nDescription=Install layered packages\nWants=network-online.target \nAfter=network-online.target\nBefore=zincati.service\nConditionPathExists=|!/usr/share/selinux/packages/k3s.pp\nConditionPathExists=|!/usr/bin/tailscale\n\n[Service]\nType=oneshot\nRemainAfterExit=yes\nExecStart=rpm-ostree install --apply-live --allow-inactive --assumeyes k3s-selinux tailscale\n\n[Install]\nWantedBy=multi-user.target\n",
         "enabled": true,
-        "name": "var-mnt-data.mount"
-      },
-      {
-        "contents": "[Unit]\nDescription=Automount ono data\n\n[Automount]\nWhere=/var/mnt/data\n\n[Install]\nWantedBy=multi-user.target\n",
-        "enabled": true,
-        "name": "var-mnt-data.automount"
+        "name": "rpm-ostree-install-layered.service"
       }
     ]
   }

@@ -1,0 +1,101 @@
+variant: fcos
+version: 1.5.0
+storage:
+  disks:
+    - device: /dev/disk/by-id/coreos-boot-disk
+      wipe_table: false
+      partitions:
+      - number: 4
+        label: root
+        size_mib: 8192
+        resize: true
+      - label: var  # not specifying "number", so this will go after the root partition
+        size_mib: 0 # means "use the rest of the space on the disk"
+  filesystems:
+    - path: /var
+      device: /dev/disk/by-partlabel/var
+      format: xfs
+      wipe_filesystem: false # preserve /var on reinstall (this is the default, but be explicit)
+      with_mount_unit: true  # mount this filesystem in the real root
+  files:
+    - path: /usr/local/bin/k3s
+      overwrite: true
+      mode: 0755
+      contents:
+        source: "https://github.com/k3s-io/k3s/releases/download/v1.29.0%2Bk3s1/k3s"
+        verification:
+          hash: "sha256-eea895a961fc8bdfeb42e634cb208e5637da8643c7fd1a1b5657ff76415a4c7a"
+    - path: /etc/rancher/k3s/kubelet.config
+      mode: 0644
+      contents:
+        inline: |
+          apiVersion: kubelet.config.k8s.io/v1beta1
+          kind: KubeletConfiguration
+          shutdownGracePeriod: 60s
+          shutdownGracePeriodCriticalPods: 10s
+    - path: /etc/yum.repos.d/kubernetes.repo
+      mode: 0644
+      contents:
+        inline: |
+          [kubernetes]
+          name=Kubernetes
+          baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-$basearch
+          enabled=1
+          gpgcheck=1
+          gpgkey=https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg          
+    - path: /etc/yum.repos.d/rancher-k3s-common.repo
+      mode: 0644
+      contents:
+        inline: |
+          [rancher-k3s-common-stable]
+          name=Rancher K3s Common (stable)
+          baseurl=https://rpm.rancher.io/k3s/stable/common/centos/8/noarch
+          enabled=1
+          gpgcheck=1
+          repo_gpgcheck=0
+          gpgkey=https://rpm.rancher.io/public.key
+systemd:
+  units:
+    - name: "k3s.service"
+      enabled: false
+      contents: |
+        [Unit]
+        Description=Lightweight Kubernetes
+        Documentation=https://k3s.io
+        Wants=network-online.target
+        After=network-online.target
+
+        [Install]
+        WantedBy=multi-user.target
+
+        [Service]
+        Type=notify
+        EnvironmentFile=-/etc/default/%N
+        EnvironmentFile=-/etc/sysconfig/%N
+        EnvironmentFile=-/etc/systemd/system/k3s.service.env
+        KillMode=process
+        Delegate=yes
+        # Having non-zero Limit*s causes performance problems due to accounting overhead
+        # in the kernel. We recommend using cgroups to do container-local accounting.
+        LimitNOFILE=1048576
+        LimitNPROC=infinity
+        LimitCORE=infinity
+        TasksMax=infinity
+        TimeoutStartSec=0
+        Restart=always
+        RestartSec=5s
+        ExecStartPre=/bin/sh -xc '! /usr/bin/systemctl is-enabled --quiet nm-cloud-setup.service'
+        ExecStartPre=-/sbin/modprobe br_netfilter
+        ExecStartPre=-/sbin/modprobe overlay
+        ExecStart=/usr/local/bin/k3s \
+            server \
+          --disable \
+          traefik \
+          --disable \
+          servicelb \
+          --server https://192.168.1.187:6443 \
+          --token-file /root/token
+
+        [Service]
+        TimeoutStopFailureMode=abort
+

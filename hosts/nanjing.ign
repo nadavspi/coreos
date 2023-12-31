@@ -1,0 +1,36 @@
+{
+  "ignition": {
+    "config": {
+      "merge": [
+        {
+          "compression": "gzip",
+          "source": "data:;base64,H4sIAAAAAAAC/3yVXXOiTBbH7/MpWGq9chAEjWa2rFoQE0keje9vj6mtFg7asekm3Y2Ks/nuT6EmITOZ8Ub6lf/5n985/LhSFBWvKZaYUfW7ko0VRfUZDfH6fawoagR8Dep35e/LhPK+dDkQxRyEON+iro84Vr/lNwiWcD+7QA2QRN//s0ICrivf2hXh2edfUzfSwaz6iDqOa1u6MY5Wx2ln8ILxfbnG2k7q0UdahdSho9q203Xm+sa49+iqUovL+0m9WF/00MxaWOFiV3+0Pbueruh20K/M+p2xvXce+cFNbJPhzoHadt8NxsnYm96OrfnC5J1xulrbu6Po602neA3DVBZfnKmX9iMzeB7G09vo3ujf/5VOWn1jMTKdfb04fOmsSXo9rdxwPeUP6bzYLE5m7U11fI3qmL88EGdeH7e2s1m5GM/dTho2HbxYVcJmtW2OJw7mq6o+taqOGb60Q3p9TxJv0QT9XowC8B5rXUmJud90cVhGo8nxeGv4k+7NwoxinR16Rs33XB3Jfgrcje3pQ28k0+3B70hKoL4o1sbkUL3zaJ8C6l1HIHEwshIjdI89K5zd3jy7G1OiXTjju503O8Zderu4e7kVNRp071rieWWB7CYSVfE9Gj60zNhHx5v4DgV6sIfEt/xyb+FPnOfxbl/0umU9LP+1mvK+G1ZubdvVdWvQXbdHC7tv2+o7B6+Xp6fT/+sZEHUH/I0bq1QpGdn+05oaIyH2wQeWiQAuchB+IKiuOUti8QlQRVED5m+BfyZxvwEgP8GZBOxD5dPHmkpRdIKWogDtRIxz51QhNnYiN4zjIwQPkP7ydiE2GgRmtVq+UU6EW90japbJwvXK3VGrms15vdqx1p5ZN3NeP9TguiaSFksG7Xp3sqi9+LN+1K8Rv1px3HCXk3iVN/Tp3TAhGUenOr04FmICv3EsRnKThaaD9PWYs2xrKdBFKiREgRajNfCS2OQj9hmVQKXINYavqv+Plf+tYFoF0xgBIQXTuLytYBqSFUyDMlkwjURAwTRQwTROIgqmsd8AzYYcU4npumAamIaMRyhrWwXDhkPMeHZ0OB+OWh33fz37rjUoWK6PZMHIE5iLJmJBJqtiGr9z8ywuxx/F8jduBpzFmP6MQN6lz/6pfw+B77APT0vaOoA/lIjLRv5Z0xPBdbHCVEdrkDJVNA0lkhG2xlR5A1LRNMp8AogrBU/596g16CzpaDSfjFwsECHMRxIalC3pp6zk0H6/U/MZh1LW+tXcztc/1oUAjhHRTvr+K2U6NEriHNfbHe+O/7j62ocxxfJpSV0QPsdxltCGR4VEhCgEpcAhUGLkb9EaxJJOEZWiQUHuGd9qjBJMoSQRX4NUltQOJfCvV5fUgZBxaBwx9ZHEbzKXtMlocPr89ZDctA5YSNH4/7/O5m8QB10AwTQ56G8q9K0lSnH8x5NZ1iTCRPiIwJIuaS7dozSGBqMgNkwu6QAihM/KWwcsG2kW5gcFPI40JiQHUPDFFU1DcUxSjeAdZANC2F7DFPnyMiFEEkEKQtlaQruoVz6ruTj8dHYUAidtRAmRWMta7Ltl+doHilYEsmKQPIEvUPhQql2Uapf8/YLER51dvV79EwAA//8SXP44gwgAAA=="
+        },
+        {
+          "compression": "gzip",
+          "source": "data:;base64,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"
+        }
+      ]
+    },
+    "version": "3.4.0"
+  },
+  "storage": {
+    "files": [
+      {
+        "path": "/etc/hostname",
+        "contents": {
+          "compression": "",
+          "source": "data:,nanjing"
+        },
+        "mode": 420
+      },
+      {
+        "path": "/etc/zincati/config.d/55-updates-strategy.toml",
+        "contents": {
+          "compression": "gzip",
+          "source": "data:;base64,H4sIAAAAAAAC/2TNMQrDMAyF4V2nEDpA6qUdChl7glI6GGNMLVJDIwdbIaSnLxoydZU+/ufXJSflHqBrS8rTjiPSwq3UXF4Ex384TgG0zBy/Vdjk4366pa7chMD/4WErkusWAuS0dxzRIz05E9pcahqtZRl3vjpH8GGZ9B3nIquy+YuDXwAAAP//4Kb2paIAAAA="
+        }
+      }
+    ]
+  }
+}

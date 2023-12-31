@@ -1,5 +1,9 @@
 variant: fcos
 version: 1.5.0
+ignition:
+  config:
+    merge:
+      - local: ./modules/tailscale.ign
 passwd:
   users:
     - name: nadavspi
@@ -19,6 +23,24 @@ systemd:
           ExecStart=
           ExecStart=-/usr/sbin/agetty --autologin nadavspi --noclear %I $TERM
           TTYVTDisallocate=no
+    - name: "rpm-ostree-install-layered.service"
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Install layered packages
+        Wants=network-online.target 
+        After=network-online.target
+        Before=zincati.service
+        ConditionPathExists=|!/usr/share/selinux/packages/k3s.pp
+        ConditionPathExists=|!/usr/bin/tailscale
+
+        [Service]
+        Type=oneshot
+        RemainAfterExit=yes
+        ExecStart=rpm-ostree install --apply-live --allow-inactive --assumeyes k3s-selinux tailscale
+
+        [Install]
+        WantedBy=multi-user.target
 storage:
   files:
     - path: /etc/profile.d/systemd-pager.sh
@@ -27,14 +49,3 @@ storage:
         inline: |
           # Tell systemd to not use a pager when printing information
           export SYSTEMD_PAGER=cat
-    - path: /etc/zincati/config.d/55-updates-strategy.toml
-      contents:
-        inline: |
-          [updates]
-          strategy = "periodic"
-          [updates.periodic]
-          time_zone = "US/Eastern"
-          [[updates.periodic.window]]
-          days = [ "Mon", "Thu" ]
-          start_time = "05:00"
-          length_minutes = 60

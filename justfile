@@ -11,6 +11,7 @@ build host:
   just butane --pretty --strict base.bu --output base.ign --files-dir .           
   just butane --pretty --strict modules/adguardhome.bu --output modules/adguardhome.ign --files-dir .           
   just butane --pretty --strict modules/k3s.bu --output modules/k3s.ign --files-dir .           
+  just butane --pretty --strict modules/k3s-join.bu --output modules/k3s-join.ign --files-dir .           
   just butane --pretty --strict modules/tailscale.bu --output modules/tailscale.ign --files-dir .           
   just butane --pretty --strict hosts/{{host}}.bu --output hosts/{{host}}.ign --files-dir .           
   just validate {{host}}
@@ -32,8 +33,9 @@ stop:
 
 restart: stop start
 
-iso host input:
-  just coreos-installer iso customize --dest-device /dev/vda --dest-ignition hosts/{{host}}.ign -o coreos-{{host}}.iso {{input}}
+# vda for vm
+iso host dev="/dev/sda" input="fedora-coreos-39.20231119.3.0-live.x86_64.iso":
+  just coreos-installer iso customize --dest-device {{dev}} --dest-ignition hosts/{{host}}.ign -o coreos-{{host}}.iso {{input}}
 
 butane +ARGS: 
   podman run --rm --interactive       \
@@ -57,3 +59,6 @@ coreos-installer +ARGS:
 config-kubectl:
   scp 192.168.1.187:/etc/rancher/k3s/k3s.yaml .
   sed -i "s/127\.0\.0\.1/192\.168\.1\.187/" k3s.yaml
+
+copy-token host:
+  op read "op://Personal/k3s node token/password" | ssh {{host}} "cat > token"

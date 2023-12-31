@@ -4,13 +4,13 @@ ignition:
   config:
     merge:
       - local: ./base.ign
-      - local: ./modules/k3s.ign
+      - local: ./modules/k3s-join.ign
 storage:
   files:
     - path: /etc/hostname
       mode: 0644
       contents:
-        inline: oakland
+        inline: nanjing
     - path: /etc/zincati/config.d/55-updates-strategy.toml
       contents:
         inline: |
@@ -19,6 +19,6 @@ storage:
           [updates.periodic]
           time_zone = "US/Eastern"
           [[updates.periodic.window]]
-          days = [ "Mon" ]
+          days = [ "Wed" ]
           start_time = "05:00"
           length_minutes = 60
