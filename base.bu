@@ -19,12 +19,6 @@ systemd:
           ExecStart=
           ExecStart=-/usr/sbin/agetty --autologin nadavspi --noclear %I $TERM
           TTYVTDisallocate=no
-    - name: var-mnt-data.mount
-      enabled: true 
-      contents_local: ./files/systemd/var-mnt-data.mount
-    - name: var-mnt-data.automount
-      enabled: true 
-      contents_local: ./files/systemd/var-mnt-data.automount
 storage:
   files:
     - path: /etc/profile.d/systemd-pager.sh
