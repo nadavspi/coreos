@@ -4,7 +4,6 @@ ignition:
   config:
     merge:
       - local: ./base.ign
-      - local: ./modules/k3s.ign
 storage:
   files:
     - path: /etc/hostname

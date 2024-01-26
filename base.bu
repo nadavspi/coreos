@@ -31,13 +31,12 @@ systemd:
         Wants=network-online.target 
         After=network-online.target
         Before=zincati.service
-        ConditionPathExists=|!/usr/share/selinux/packages/k3s.pp
         ConditionPathExists=|!/usr/bin/tailscale
 
         [Service]
         Type=oneshot
         RemainAfterExit=yes
-        ExecStart=rpm-ostree install --apply-live --allow-inactive --assumeyes k3s-selinux tailscale
+        ExecStart=rpm-ostree install --apply-live --allow-inactive --assumeyes tailscale
 
         [Install]
         WantedBy=multi-user.target
