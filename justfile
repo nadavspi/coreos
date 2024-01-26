@@ -2,7 +2,7 @@ default: (build "oakland")
 
 base: 
   just butane --pretty --strict base.bu --output base.ign --files-dir .           
-  virt-install --name=fcos --vcpus=2 --ram=2048 --os-variant=fedora-coreos-stable \
+  virt-install --name=coreos --vcpus=2 --ram=2048 --os-variant=fedora-coreos-stable \
       --import --network=bridge=virbr0 --graphics=none \
       --qemu-commandline="-fw_cfg name=opt/com.coreos/config,file=${PWD}/base.ign" \
       --disk=size=20,backing_store=${PWD}/fedora-coreos.qcow2
@@ -22,14 +22,14 @@ validate host:
 start host="oakland":
   just build {{host}}
   chcon --verbose --type svirt_home_t hosts/{{host}}.ign
-  virt-install --name=fcos --vcpus=2 --ram=2048 --os-variant=fedora-coreos-stable \
+  virt-install --name=coreos --vcpus=2 --ram=2048 --os-variant=fedora-coreos-stable \
       --import --network=bridge=virbr0 --graphics=none \
       --qemu-commandline="-fw_cfg name=opt/com.coreos/config,file=${PWD}/hosts/{{host}}.ign" \
       --disk=size=20,backing_store=${PWD}/fedora-coreos.qcow2
 
 stop:
-  virsh destroy fcos
-  virsh undefine --remove-all-storage fcos
+  virsh destroy coreos
+  virsh undefine --remove-all-storage coreos
 
 restart: stop start
 
